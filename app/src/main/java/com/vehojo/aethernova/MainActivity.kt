@@ -19,15 +19,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.getValue
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.setValue
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -57,6 +62,9 @@ import com.vehojo.aethernova.ui.theme.PlusJakartaSans_SemiBold
 import com.vehojo.aethernova.ui.theme.Purple
 import com.vehojo.aethernova.ui.theme.White
 import com.vehojo.aethernova.ui.theme.Yellow
+import kotlinx.coroutines.delay
+import java.time.Duration
+import java.time.LocalDateTime
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -107,9 +115,39 @@ fun MHeader() {
     }
 }
 
+@Composable
+fun pineapple(): List<Long> {
+    var now by remember() {
+        mutableStateOf(LocalDateTime.now())
+    }
+    LaunchedEffect(Unit) {
+        while(true) {
+            now = LocalDateTime.now()
+            delay(1000)
+        }
+    }
+    val newYear = LocalDateTime.of(
+        now.year + 1,
+        1,
+        1,
+        0,
+        0
+    )
+    val duration = Duration.between(now, newYear)
+
+    val days = duration.toDays()
+    val hours = duration.toHours() %24
+    val minutes = duration.toMinutes() %60
+    val seconds = duration.seconds %60
+
+    return listOf(days, hours, minutes, seconds)
+
+}
+
 @Preview
 @Composable
 fun NYProtocol() {
+    val (days, hours, minutes, seconds) = pineapple()
     Column() {
         Spacer(modifier = Modifier.height(10.dp))
         Box(
@@ -138,28 +176,26 @@ fun NYProtocol() {
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 Countdown(
-                    icon = R.drawable.block_time,
-                    value = "09",
+                    icon = R.drawable.block_hours,
+                    value = "$days",
                     label = "DAYS"
                 )
 
                 Countdown(
-                    icon = R.drawable.block_time,
-                    value = "21",
+                    value = "$hours",
                     label = "HOURS"
                 )
 
                 Countdown(
-                    icon = R.drawable.block_time,
-                    value = "37",
+                    value = "$minutes",
                     label = "MINS"
                 )
 
                 Countdown(
                     icon = R.drawable.block_secs,
-                    value = "56",
-                    label = "SECS",
-                    Color.Yellow.copy(alpha = 0.5f),
+                    value = "$seconds",
+                    label = "SEC",
+                    labelColor = Color.Yellow.copy(alpha = 0.5f),
                     labelFont = PlusJakartaSans_Bold,
                     textColor = Yellow,
                     textStyle = TextStyle(
@@ -327,7 +363,7 @@ fun NebulaStream() {
 
 @Composable
 fun Countdown(
-    icon: Int,
+    icon: Int = R.drawable.block_time,
     value: String,
     label: String,
     labelColor: Color = Color.White.copy(alpha = 0.5f),
@@ -347,7 +383,7 @@ fun Countdown(
                 fontSize = 30.sp,
                 color = textColor,
                 fontFamily = Orbitron_Black,
-                style = textStyle?: TextStyle()
+                style = textStyle ?: TextStyle()
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
