@@ -18,7 +18,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -45,10 +48,12 @@ import com.vehojo.aethernova.ui.theme.White
 @Preview(showSystemUi = true)
 @Composable
 fun CreateEvents() {
+    var textState by remember { mutableStateOf("") }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxSize()
+            .background(color = BackgroundColor)
     ) {
         Box(
             modifier = Modifier
@@ -80,7 +85,7 @@ fun CreateEvents() {
                         modifier = Modifier
                             .clickable {}
                             .size(30.dp)
-                            .offset(x = (-10).dp, y = 10.dp)
+                            .offset(x = (-15).dp, y = 10.dp)
                             .border(
                                 width = 1.dp, color = Color.White.copy(alpha = 0.1f),
                                 shape = CircleShape
@@ -107,11 +112,36 @@ fun CreateEvents() {
                 )
                 Text(
                     text = "EVENT NAME",
-                    fontSize = 12.sp,
+                    fontSize = 10.sp,
                     letterSpacing = 3.sp,
                     color = Purple,
                     fontFamily = PlusJakartaSans_SemiBold,
                     modifier = Modifier.padding(start = 20.dp, top = 20.dp)
+                )
+                OutlinedTextField(
+                    value = textState,
+                    onValueChange = {
+                        textState = it
+                    },
+                    shape = RoundedCornerShape(15.dp),
+                    textStyle = TextStyle(
+                        color = White.copy(alpha = 0.7f),
+                        fontSize = 14.sp,
+                        fontFamily = PlusJakartaSans_Medium
+                    ),
+                    modifier = Modifier
+                        .padding(start = 20.dp, top = 8.dp),
+                    placeholder = {
+                        Text(
+                            text = "Enter event name",
+                            style = TextStyle(
+                                color = White.copy(alpha = 0.4f),
+                                fontSize = 14.sp,
+                                fontFamily = PlusJakartaSans_Medium
+                            )
+                        )
+                    },
+                    singleLine = true
                 )
             }
         }
