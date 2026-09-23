@@ -42,7 +42,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.vehojo.aethernova.ui.theme.BackgroundColor
+import androidx.compose.ui.window.Dialog
 import com.vehojo.aethernova.ui.theme.BlackGrad
 import com.vehojo.aethernova.ui.theme.Orbitron_Black
 import com.vehojo.aethernova.ui.theme.Orbitron_Bold
@@ -340,7 +340,6 @@ fun NowPlaying() {
     }
 }
 
-@Preview
 @Composable
 fun Countdown(
     icon: Int = R.drawable.block_time,
@@ -377,7 +376,9 @@ fun Countdown(
 }
 
 @Composable
-fun ButCreateEvents(onClick: () -> Unit) {
+fun ButCreateEvents() {
+    var showCreateEvents by remember { mutableStateOf(false) }
+
     Spacer(modifier = Modifier.height(22.dp))
     Box(modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
@@ -385,7 +386,13 @@ fun ButCreateEvents(onClick: () -> Unit) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
+                .clickable{showCreateEvents = !showCreateEvents}
                 .size(width = 354.dp, height = 54.dp)
+                .border(
+                    shape = RoundedCornerShape(16.dp),
+                    width = 2.dp,
+                    color = White.copy(alpha = 0.1f)
+                )
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(Purple, BlackGrad)
@@ -401,6 +408,33 @@ fun ButCreateEvents(onClick: () -> Unit) {
             )
         }
     }
+    OnCreateEvents(
+        showCreateEvents = showCreateEvents,
+        onDismiss = {showCreateEvents = false}
+    )
+}
+
+@Composable
+fun OnCreateEvents(
+    showCreateEvents: Boolean,
+    onDismiss: () -> Unit
+) {
+    if (showCreateEvents) {
+        Dialog(
+            onDismissRequest = onDismiss
+        ) {
+            CreateEvents(
+                onDismiss = onDismiss
+            )
+        }
+    }
+}
+
+
+@Preview
+@Composable
+fun ButCreateEventsPreview() {
+    ButCreateEvents()
 }
 
 @Preview(showSystemUi = true)
@@ -414,6 +448,6 @@ fun MMain() {
         NYProtocol()
         NextEvents()
         NowPlaying()
-        CreateEvents()
+        ButCreateEventsPreview()
     }
 }
