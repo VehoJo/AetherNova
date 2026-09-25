@@ -264,7 +264,7 @@ fun NextEvents() {
                         fontFamily = PlusJakartaSans_Medium,
                     )
                     Text(
-                        text = "Atmospheric Fireworks",
+                        text = event?.name ?: "New Year",
                         fontSize = 16.sp,
                         color = White,
                         fontFamily = PlusJakartaSans_SemiBold,

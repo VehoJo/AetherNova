@@ -54,7 +54,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLocale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
@@ -72,17 +72,16 @@ import com.vehojo.aethernova.ui.theme.PlusJakartaSans_Regular
 import com.vehojo.aethernova.ui.theme.PlusJakartaSans_SemiBold
 import com.vehojo.aethernova.ui.theme.Purple
 import com.vehojo.aethernova.ui.theme.White
-import com.vehojo.aethernova.ui.theme.Yellow
-import kotlinx.datetime.Instant
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.ZoneId
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
 @Composable
 fun CreateEvents(onDismiss: () -> Unit) {
+    val configuration = LocalConfiguration.current
+    val locale = configuration.locales[0]
     val minNameLenght = 3
     val maxNameLenght = 10
     val maxDescriptionLenght = 100
@@ -265,7 +264,7 @@ fun CreateEvents(onDismiss: () -> Unit) {
                             text = if (selectedDate != null) {
                                 SimpleDateFormat(
                                     "dd MMM, yyyy",
-                                    LocalLocale.current.platformLocale
+                                    locale
                                 ).format(Date(selectedDate!!))
                             } else (
                                     "01.01.2027"
@@ -278,14 +277,7 @@ fun CreateEvents(onDismiss: () -> Unit) {
                     }
                 }
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(SpanStyle(color = Purple)) {
-                            append("TIME")
-                        }
-                        withStyle(SpanStyle(color = Color.Red)) {
-                            append("*")
-                        }
-                    },
+                    text = "TIME",
                     fontSize = 10.sp,
                     letterSpacing = 3.sp,
                     color = Purple,
@@ -381,6 +373,16 @@ fun CreateEvents(onDismiss: () -> Unit) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
+                                .clickable{
+                                    val event = Event(
+                                        name = textState,
+                                        date = selectedDate,
+                                        hour = selectedTime?.hour,
+                                        minute = selectedTime?.minute,
+                                        description = textStateD,
+                                    )
+                                    onDismiss()
+                                }
                                 .padding(top = 20.dp)
                                 .size(width = 280.dp, height = 55.dp)
                                 .border(
