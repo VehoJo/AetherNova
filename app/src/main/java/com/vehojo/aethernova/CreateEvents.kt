@@ -82,9 +82,6 @@ import java.util.Locale
 fun CreateEvents(onDismiss: () -> Unit) {
     val configuration = LocalConfiguration.current
     val locale = configuration.locales[0]
-    val minNameLenght = 3
-    val maxNameLenght = 10
-    val maxDescriptionLenght = 100
     val formatter = remember { SimpleDateFormat("HH:mm", Locale.getDefault()) }
     var showTimePicker by remember { mutableStateOf(false) }
     var selectedTime: TimePickerState? by remember { mutableStateOf(null) }
@@ -92,10 +89,14 @@ fun CreateEvents(onDismiss: () -> Unit) {
     var selectedDate by remember { mutableStateOf<Long?>(null) }
     var textState by remember { mutableStateOf("") }
     var textStateD by remember { mutableStateOf("") }
-    val nameErrorD = textStateD.length > maxDescriptionLenght
+    var showErrors by remember { mutableStateOf(false) }
+    val dateError  = showErrors && selectedDate == null
+    val nameErrorD = textStateD.length > 100
     val nameError =
-        textState.isNotEmpty() &&
-                textState.length !in minNameLenght..maxNameLenght
+        showErrors && (
+        textState.isBlank() || 
+                textState.length !in 3..10
+                )
     if (showModal) {
         DatePickerModal(
             onDateSelected = {
@@ -250,7 +251,7 @@ fun CreateEvents(onDismiss: () -> Unit) {
                         .border(
                             shape = RoundedCornerShape(15.dp),
                             width = 1.dp,
-                            color = White.copy(alpha = 0.4f)
+                            color = if (dateError) Color(0xFFB3261E) else White.copy(alpha = 0.4f)
                         )
                 ) {
                     Row {
@@ -374,14 +375,20 @@ fun CreateEvents(onDismiss: () -> Unit) {
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .clickable{
-                                    val event = Event(
-                                        name = textState,
-                                        date = selectedDate,
-                                        hour = selectedTime?.hour,
-                                        minute = selectedTime?.minute,
-                                        description = textStateD,
-                                    )
-                                    onDismiss()
+                                    showErrors = true
+                                    if (
+                                        !nameError &&
+                                        selectedDate != null
+                                    ) {
+                                        val event = Event(
+                                            name = textState,
+                                            date = selectedDate,
+                                            hour = selectedTime?.hour,
+                                            minute = selectedTime?.minute,
+                                            description = textStateD,
+                                        )
+                                        onDismiss()
+                                    }
                                 }
                                 .padding(top = 20.dp)
                                 .size(width = 280.dp, height = 55.dp)

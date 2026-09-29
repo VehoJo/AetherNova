@@ -1,3 +1,7 @@
 package com.vehojo.aethernova
 
-var event: Event? = null
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
+var event by mutableStateOf<Event?>(null)
