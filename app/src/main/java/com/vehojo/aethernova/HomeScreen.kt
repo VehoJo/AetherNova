@@ -1,5 +1,6 @@
 package com.vehojo.aethernova
 
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -59,15 +60,12 @@ import java.time.LocalDateTime
 
 @Composable
 fun HomeScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color(0xFF0A0A12))
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color(0xFF0A0A12))
     ) {
         MHeader()
         NYProtocol()
-        NextEvents()
-        NowPlaying()
     }
 }
 
@@ -216,126 +214,17 @@ fun NYProtocol() {
                 fontFamily = Orbitron_Black
             )
         }
-    }
-}
-
-@Preview
-@Composable
-fun NextEvents() {
-    Spacer(modifier = Modifier.height(37.dp))
-    Column() {
-        Row {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Box(modifier = Modifier.align(Alignment.Center)) {
-                    Icon(
-                        painter = painterResource(R.drawable.milestone_block),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                    )
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .align(Alignment.CenterStart)
-                            .offset(x = 16.dp)
-                            .background(
-                                color = Purple.copy(alpha = 0.2f),
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.lightning),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(start = 100.dp)
-                        .align(Alignment.CenterStart)
-                ) {
-                    Text(
-                        text = "Next Events",
-                        fontSize = 12.sp,
-                        color = White.copy(alpha = 0.6f),
-                        fontFamily = PlusJakartaSans_Medium,
-                    )
-                    Text(
-                        text = event?.name ?: "New Year",
-                        fontSize = 16.sp,
-                        color = White,
-                        fontFamily = PlusJakartaSans_SemiBold,
-                    )
-                }
-                Text(
-                    text = "09:32",
-                    fontSize = 12.sp,
-                    color = Purple,
-                    fontFamily = Orbitron_Bold,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .padding(end = 45.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-@Preview
-fun NowPlaying() {
-    Spacer(modifier = Modifier.height(12.dp))
-    Column() {
-        Row {
-            Box(
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Box(modifier = Modifier.align(Alignment.Center)) {
-                    Icon(
-                        painter = painterResource(R.drawable.nebula_block),
-                        contentDescription = null,
-                        tint = Color.Unspecified,
-                    )
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .align(Alignment.CenterStart)
-                            .offset(x = 16.dp)
-                            .background(
-                                color = Yellow.copy(alpha = 0.2f),
-                                shape = RoundedCornerShape(8.dp)
-                            )
-                    ) {
-                        Icon(
-                            painter = painterResource(R.drawable.note),
-                            contentDescription = null,
-                            tint = Color.Unspecified
-                        )
-                    }
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(start = 100.dp)
-                        .align(Alignment.CenterStart)
-                ) {
-                    Text(
-                        text = "Now Playing",
-                        fontSize = 12.sp,
-                        color = White.copy(alpha = 0.6f),
-                        fontFamily = PlusJakartaSans_Medium,
-                    )
-                    Text(
-                        text = "Synthesized Echoes",
-                        fontSize = 16.sp,
-                        color = White,
-                        fontFamily = PlusJakartaSans_SemiBold,
-                    )
-                }
-            }
+        Spacer(modifier = Modifier.height(75.dp))
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = "Nothing",
+                fontSize = 52.sp,
+                color = Color.White.copy(alpha = 0.25f),
+                fontFamily = Orbitron_Bold
+            )
         }
     }
 }
@@ -375,68 +264,6 @@ fun Countdown(
     }
 }
 
-@Composable
-fun ButCreateEvents() {
-    var showCreateEvents by remember { mutableStateOf(false) }
-
-    Spacer(modifier = Modifier.height(22.dp))
-    Box(modifier = Modifier.fillMaxWidth(),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .clickable{showCreateEvents = !showCreateEvents}
-                .size(width = 354.dp, height = 54.dp)
-                .border(
-                    shape = RoundedCornerShape(16.dp),
-                    width = 2.dp,
-                    color = White.copy(alpha = 0.1f)
-                )
-                .background(
-                    brush = Brush.linearGradient(
-                        colors = listOf(Purple, BlackGrad)
-                    ),
-                    shape = RoundedCornerShape(16.dp)
-                )
-        ) {
-            Text(
-                "CREATE EVENTS",
-                fontSize = 14.sp,
-                fontFamily = Orbitron_Bold,
-                color = Color.White,
-            )
-        }
-    }
-    OnCreateEvents(
-        showCreateEvents = showCreateEvents,
-        onDismiss = {showCreateEvents = false}
-    )
-}
-
-@Composable
-fun OnCreateEvents(
-    showCreateEvents: Boolean,
-    onDismiss: () -> Unit
-) {
-    if (showCreateEvents) {
-        Dialog(
-            onDismissRequest = onDismiss
-        ) {
-            CreateEvents(
-                onDismiss = onDismiss
-            )
-        }
-    }
-}
-
-
-@Preview
-@Composable
-fun ButCreateEventsPreview() {
-    ButCreateEvents()
-}
-
 @Preview(showSystemUi = true)
 @Composable
 fun MMain() {
@@ -446,8 +273,5 @@ fun MMain() {
     ) {
         MHeader()
         NYProtocol()
-        NextEvents()
-        NowPlaying()
-        ButCreateEventsPreview()
     }
 }
