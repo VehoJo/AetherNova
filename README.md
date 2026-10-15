@@ -33,7 +33,7 @@ The goal is to make the interface feel like a futuristic protocol / control inte
 
 ## ⛶ Screenshots
 
-![Home screen](screenshots/screenshot_1.png)
+<img src="screenshots/screenshot_1.png" alt="Home screen" height="400">
 
 ## 🛠️ Built With
 
