@@ -31,6 +31,10 @@ The design combines:
 
 The goal is to make the interface feel like a futuristic protocol / control interface rather than a traditional Android application.
 
+## ⛶ Screenshots
+
+![Home screen](screenshots/screenshot_1.png)
+
 ## 🛠️ Built With
 
 - Kotlin
